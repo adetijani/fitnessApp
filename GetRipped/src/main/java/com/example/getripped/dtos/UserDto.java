@@ -13,6 +13,7 @@ import java.util.Date;
 
 public class UserDto {
     private String name;
+    private String lastName;
     private String email;
     private String password;
     private Date birthdate;
@@ -22,6 +23,7 @@ public class UserDto {
 
     public UserDto(Users users){
         this.name = users.getName();
+        this.lastName = users.getLastName();
         this.email = users.getEmail();
         this.password = users.getPassword();
         this.birthdate = users.getBirthdate();
