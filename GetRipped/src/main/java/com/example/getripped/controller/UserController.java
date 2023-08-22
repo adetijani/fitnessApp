@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController("/")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -29,5 +28,16 @@ public class UserController {
          } else {
              return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
          }
+     }
+     @PutMapping("/update/{userId}")
+     public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto updateUserDto){
+         UserDto updateUser = userService.updateUser(userId, updateUserDto);
+         return ResponseEntity.ok().body(updateUser);
+     }
+
+     @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId){
+         userService.deleteUser(userId);
+         return ResponseEntity.ok().body("Successfully deleted user");
      }
 }

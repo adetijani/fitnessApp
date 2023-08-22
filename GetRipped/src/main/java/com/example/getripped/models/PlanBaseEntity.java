@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+
 public abstract class PlanBaseEntity extends BaseEntity {
     private Category category;
     private String currentWeightRange;
