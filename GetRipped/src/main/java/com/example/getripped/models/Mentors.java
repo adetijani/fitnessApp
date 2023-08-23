@@ -21,4 +21,6 @@ public class Mentors extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Category specialization;
     private int accountStatus;
+
+
 }
