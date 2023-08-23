@@ -27,7 +27,7 @@ public class UserService {
     public UserDto login(String email, String password, HttpSession session){
         Users user = userRepo.findByEmail(email);
         if(user != null && BCrypt.checkpw(password, user.getPassword())){
-            session.setAttribute("Auth", user);
+            session.setAttribute("Auth", new UserDto(user));
             return  new UserDto(user);
         } else {
             return null;
@@ -36,12 +36,13 @@ public class UserService {
 
         public UserDto updateUser(Long userId, UserDto updateUserDto){
         Users existingUser = userRepo.findUsersById(userId);
+        String updatePassword = BCrypt.hashpw(updateUserDto.getPassword(), BCrypt.gensalt());
         if(existingUser != null){
             existingUser.setBirthdate(updateUserDto.getBirthdate());
             existingUser.setName(updateUserDto.getName());
             existingUser.setLastName(updateUserDto.getLastName());
             existingUser.setRole(updateUserDto.getRole());
-            existingUser.setPassword(updateUserDto.getPassword());
+            existingUser.setPassword(updatePassword);
             existingUser.setEmail(updateUserDto.getEmail());
             existingUser.setGender(updateUserDto.getGender());
             existingUser.setRegStatus(updateUserDto.getRegStatus());
@@ -53,6 +54,6 @@ public class UserService {
         }
 
         public void deleteUser(Long userId){
-         userRepo.deleteUsersById(userId);
+         userRepo.deleteById(userId);
         }
     }
