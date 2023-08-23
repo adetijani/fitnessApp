@@ -1,14 +1,18 @@
 package com.example.getripped.service;
 
 import com.example.getripped.dtos.DietDto;
+import com.example.getripped.dtos.ExerciseDto;
 import com.example.getripped.dtos.MentorDto;
 import com.example.getripped.models.DietPlan;
 import com.example.getripped.models.Exercise;
 import com.example.getripped.models.Mentors;
+import com.example.getripped.repository.ExerciseRepo;
 import com.example.getripped.repository.MentorRepo;
 import com.example.getripped.repository.DietRepo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,53 +25,50 @@ public class MentorService {
     private Exercise exercise;
     private ExerciseRepo exerciseRepo;
     private DietRepo dietRepo;
+    private MentorService mentorService;
+
+    private DietService dietService;
+    private ExerciseService exerciseService;
 
 
-    public Mentors getMentorById(Long mentorId) {
-        return mentorRepo.findMentorById(mentorId);
+
+    public MentorDto getMentorById (Long Id ){
+        Optional<Mentors> updateId= mentorRepo.findMentorById(Id);
+        if(updateId.isEmpty()){
+            throw new RuntimeException();
+        }return new MentorDto(updateId.get());
     }
 
-    public ExercisePlan createExercise (ExerciseDto exerciseDto){
-        DietPlan dietPlan = new DietPlan(exerciseDto);
-        return exerciseRepo.save(exercisePlan);
+
+
+    public Exercise createExercise (ExerciseDto exerciseDto){
+        Exercise exercise = new Exercise (exerciseDto);
+        return exerciseRepo.save(exercise);
     }
     public DietPlan createDiet (DietDto dietDto){
         DietPlan dietPlan = new DietPlan(dietDto);
         return dietRepo.save(dietPlan);
     }
 
-    public DietPlan editExercise (ExercisePlan exercisePlan) {
-        ExercisePlan diet = dietRepo.findById(exercisePlan.getId()).orElseThrow();
-        exercise.setExerciseName(exercisePlan.getExercise());
-        exercise.setCategory(exercisePlan.getCategory());
-        exercise.setMentorId(exercisePlan.getMentorId());
-        exercise.setWeightGainRange(exercisePlan.getWeightGainRange());
-        return exerciseRepo.save(exercise);
+
+
+    public ResponseEntity<String> updateExercise (Long Id,ExerciseDto exerciseDto) {
+        exerciseService.updateExercise(Id, exerciseDto);
+        return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
     }
+    public ResponseEntity<String> updateDietPlan (Long dietId, DietDto dietDto) {
+        dietService.updateDietPlan(dietId, dietDto);
+        return new ResponseEntity<>("Updated Successfully", HttpStatus.OK);
+    }
+
+
 
     public void deleteExercise (Long Id) {
-        exerciseRepo.deleteById\(Id);
-    }
-
-    public DietPlan editDiet (DietPlan dietPlan) {
-        DietPlan diet = dietRepo.findById(dietPlan.getId()).orElseThrow();
-        diet.setDiet(dietPlan.getDiet());
-        diet.setCategory(dietPlan.getCategory());
-        diet.setMentorId(dietPlan.getMentorId());
-        diet.setWeightGainRange(dietPlan.getWeightGainRange());
-        return dietRepo.save(diet);
+        exerciseRepo.deleteById(Id);
     }
 
     public void deleteDiet (Long Id) {
         dietRepo.deleteById(Id);
     }
-
-    public MentorDto getMentorsById (Long Id ){
-        Optional<Mentors> updateId= mentorRepo.findById(Id);
-        if(updateId.isEmpty()){
-            throw new RuntimeException();
-        }return new MentorDto(updateId.get());
-    }
-
 
 }

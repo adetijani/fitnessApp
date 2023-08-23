@@ -1,13 +1,14 @@
 package com.example.getripped.controller;
 
 import com.example.getripped.dtos.DietDto;
+import com.example.getripped.dtos.ExerciseDto;
+import com.example.getripped.dtos.MentorDto;
 import com.example.getripped.models.DietPlan;
 import com.example.getripped.models.Exercise;
 import com.example.getripped.service.DietService;
+import com.example.getripped.service.ExerciseService;
 import com.example.getripped.service.MentorService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import com.example.getripped.repository.DietRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +24,33 @@ public class MentorController {
 
 
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MentorDto> getMentorById(@PathVariable Long id) {
+        MentorDto mentorDto = mentorService.getMentorById(id);
+        return ResponseEntity.ok(mentorDto);
+    }
 
     @PostMapping("save/exercise")
     public ResponseEntity<ExerciseDto> createExercise (@RequestBody ExerciseDto exerciseDto){
-        return dietService.createDietPlan(exerciseDto);
+        Exercise exercise = mentorService.createExercise(exerciseDto);
+        return ResponseEntity.ok(exerciseDto);
     }
 
     @PostMapping("save/diet")
-    public ResponseEntity<DietDto> createDiet (@RequestBody DietDto dietDto){
-        return dietService.createDietPlan(dietDto);
+    public DietPlan createDiet (@RequestBody DietDto dietDto){
+        DietPlan dietPlan = mentorService.createDiet(dietDto);
+        return mentorService.createDiet(dietDto);
     }
 
-    @PutMapping("edit/exercise")
-    public ResponseEntity<DietPlan> editExercise (@RequestBody ExercisePlan exercisePlan){
-        DietPlan editExercise = mentorService.editExercise(exercisePlan);
-        return new ResponseEntity(editExercise,HttpStatus.CREATED);
+    @PutMapping("edit/{Id}")
+    public ResponseEntity<ExerciseDto> updateExercise (@RequestBody Long id, ExerciseDto exerciseDto){
+        ResponseEntity<String> updateExercise = mentorService.updateExercise(id,exerciseDto);
+        return new ResponseEntity(updateExercise,HttpStatus.CREATED);
     }
     @PutMapping("edit/diet")
-    public ResponseEntity<DietPlan> editDiet (@RequestBody DietPlan dietPlan){
-        DietPlan editDiet = mentorService.editDiet(dietPlan);
-        return new ResponseEntity(editDiet,HttpStatus.CREATED);
+    public ResponseEntity<DietPlan> updateDietPlan (@RequestBody Long id, DietDto dietDto){
+        ResponseEntity<String> updateDietPlan = mentorService.updateDietPlan(id,dietDto);
+        return new ResponseEntity(updateDietPlan,HttpStatus.CREATED);
     }
 
     @DeleteMapping("delete/{exerciseId}")
