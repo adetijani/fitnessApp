@@ -19,7 +19,6 @@ public class DietService {
     public ResponseEntity<DietDto> createDietPlan(DietDto dietDto) {
         DietPlan dietPlan = dietRepo.save(new DietPlan(dietDto));
         DietDto dietDto1 = new DietDto(dietPlan);
-
         return new ResponseEntity<>(dietDto1, HttpStatus.CREATED);
     }
 

@@ -1,10 +1,12 @@
 package com.example.getripped.service;
 
+import com.example.getripped.dtos.DietDto;
 import com.example.getripped.dtos.MentorDto;
 import com.example.getripped.models.DietPlan;
 import com.example.getripped.models.Exercise;
 import com.example.getripped.models.Mentors;
 import com.example.getripped.repository.MentorRepo;
+import com.example.getripped.repository.DietRepo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,45 +27,39 @@ public class MentorService {
         return mentorRepo.findMentorById(mentorId);
     }
 
-    public Exercise createExercise(Exercise exercise, HttpSession session) {
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        exercise.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
+    public ExercisePlan createExercise (ExerciseDto exerciseDto){
+        DietPlan dietPlan = new DietPlan(exerciseDto);
+        return exerciseRepo.save(exercisePlan);
+    }
+    public DietPlan createDiet (DietDto dietDto){
+        DietPlan dietPlan = new DietPlan(dietDto);
+        return dietRepo.save(dietPlan);
+    }
+
+    public DietPlan editExercise (ExercisePlan exercisePlan) {
+        ExercisePlan diet = dietRepo.findById(exercisePlan.getId()).orElseThrow();
+        exercise.setExerciseName(exercisePlan.getExercise());
+        exercise.setCategory(exercisePlan.getCategory());
+        exercise.setMentorId(exercisePlan.getMentorId());
+        exercise.setWeightGainRange(exercisePlan.getWeightGainRange());
         return exerciseRepo.save(exercise);
     }
-    public DietPlan createDiet (DietPlan dietPlan, HttpSession session){
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        dietPlan.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
-        return dietPlan.save(dietPlan);
+
+    public void deleteExercise (Long Id) {
+        exerciseRepo.deleteById\(Id);
     }
 
-    public Exercise editExercise (Exercise exercise, HttpSession session) {
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        exercise.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
-        return exerciseRepo.update(exercise);
+    public DietPlan editDiet (DietPlan dietPlan) {
+        DietPlan diet = dietRepo.findById(dietPlan.getId()).orElseThrow();
+        diet.setDiet(dietPlan.getDiet());
+        diet.setCategory(dietPlan.getCategory());
+        diet.setMentorId(dietPlan.getMentorId());
+        diet.setWeightGainRange(dietPlan.getWeightGainRange());
+        return dietRepo.save(diet);
     }
 
-    public Exercise deleteExercise(Exercise exercise, HttpSession session) {
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        exercise.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
-        return exerciseRepo.update(exercise);
-    }
-
-    public Exercise editDiet (Exercise exercise, HttpSession session) {
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        exercise.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
-        return exerciseRepo.update(exercise);
-    }
-
-    public Exercise deleteDiet (Exercise exercise, HttpSession session) {
-        Mentors mentorDto = (Mentors) session.getAttribute("auth");
-        exercise.setMentorId(mentorDto.getId());
-        exercise.setCategory(mentorDto.getSpecialization());
-        return exerciseRepo.update(exercise);
+    public void deleteDiet (Long Id) {
+        dietRepo.deleteById(Id);
     }
 
     public MentorDto getMentorsById (Long Id ){
