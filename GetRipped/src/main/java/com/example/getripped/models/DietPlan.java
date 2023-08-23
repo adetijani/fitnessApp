@@ -1,5 +1,6 @@
 package com.example.getripped.models;
 
+import com.example.getripped.dtos.DietDto;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,4 +17,8 @@ public class DietPlan extends PlanBaseEntity{
     private Long mentorId;
 
 
+    public DietPlan(DietDto dietDto){
+        this.diet = dietDto.getDiet();
+        this.mentorId = dietDto.getMentorId();
+    }
 }
