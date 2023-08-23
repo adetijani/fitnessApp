@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepo extends JpaRepository<Users, Long> {
     Users findByEmail(String email);
     Users findUsersById(Long id);
-    Users deleteUsersById(Long id);
+
 }
