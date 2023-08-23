@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 public class DietPlan extends PlanBaseEntity{
     private String diet;
-
     private Long mentorId;
 
 
