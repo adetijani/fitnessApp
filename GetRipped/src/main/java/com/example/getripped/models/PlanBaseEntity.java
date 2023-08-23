@@ -1,4 +1,5 @@
 package com.example.getripped.models;
+import com.example.getripped.dtos.DietDto;
 import com.example.getripped.enums.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.MappedSuperclass;
@@ -18,3 +19,4 @@ public abstract class PlanBaseEntity extends BaseEntity {
     private String weightGainRange;
 
 }
+
