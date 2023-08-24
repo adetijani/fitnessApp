@@ -20,23 +20,20 @@ public class UserAccountController {
 
 
     @PostMapping("save")
-    public ResponseEntity<UserAccountDto> save(@RequestBody UserAccountDto userAccountDto, HttpSession session) {
-          Users user  = (Users)session.getAttribute("User");
-          userAccountService.createUserAccount(userAccountDto, user);
-
-        return null;
+    public ResponseEntity<UserAccountDto> save(@RequestBody UserAccountDto userAccountDto) {
+        return userAccountService.createUserAccount(userAccountDto);
     }
     @PostMapping("update")
-    public ResponseEntity<UserAccountDto> update (@RequestBody UserAccountDto userAccountDto, HttpSession session) {
-        return  null;
+    public ResponseEntity<UserAccountDto> update (@RequestBody UserAccountDto userAccountDto) {
+        return userAccountService.updateUserAccount(userAccountDto);
     }
     @DeleteMapping("delete")
-    public ResponseEntity<UserAccountDto> delete (@RequestBody UserAccountDto userAccountDto,HttpSession session) {
-        return null;
+    public ResponseEntity<UserAccountDto> delete (@RequestBody UserAccountDto userAccountDto) {
+        return userAccountService.deleteUserAccount(userAccountDto);
     }
-    @GetMapping("getUser")
-    public ResponseEntity<UserAccountDto> getUser (@PathVariable UserAccountDto userAccountDto,HttpSession session) {
-        return null;
+    @GetMapping("getUser/{id}")
+    public ResponseEntity<UserAccountDto> getUser (@PathVariable Long id) {
+        return userAccountService.getUserAccountDto(id);
     }
 
 

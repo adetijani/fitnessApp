@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserAccountDto {
+    private Long id;
     private Long userId;
     private Long dietPlan;
     private Long exercisePlan;

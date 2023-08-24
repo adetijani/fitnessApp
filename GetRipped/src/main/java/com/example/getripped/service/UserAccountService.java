@@ -16,18 +16,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserAccountService {
     private final UserAccountRepo userAccountRepo;
+    private final HttpSession session;
 
-    public ResponseEntity<UserAccountDto> save (UserAccountDto userAccountDto) {
+    public ResponseEntity<UserAccountDto> createUserAccount (UserAccountDto userAccountDto) {
+        Users user = (Users) session.getAttribute("Auth");
+        userAccountDto.setUserId(user.getId());
         UserAccount userAccount = userAccountRepo.save(new UserAccount(userAccountDto));
          return new ResponseEntity<>(new UserAccountDto(userAccount), HttpStatus.CREATED);
     }
-    public ResponseEntity<UserAccountDto> update (UserAccountDto userAccountDto,HttpSession session) {
-        UserDto userDto = (UserDto) session.getAttribute("auth");
+    public ResponseEntity<UserAccountDto> updateUserAccount (UserAccountDto userAccountDto) {
         UserAccount userAccount = userAccountRepo.save(new UserAccount(userAccountDto));
         return new ResponseEntity<>(new UserAccountDto(userAccount),HttpStatus.OK);
     }
-    public ResponseEntity<UserAccountDto> delete (UserAccountDto userAccountDto,HttpSession session) {
-        userAccountRepo.delete(new UserAccount(userAccountDto));
+    public ResponseEntity<UserAccountDto> deleteUserAccount (UserAccountDto userAccountDto) {
+        userAccountRepo.deleteById(userAccountDto.getId());
         return new ResponseEntity<>(userAccountDto,HttpStatus.OK);
     }
 
@@ -35,11 +37,6 @@ public class UserAccountService {
         UserAccount userAccount = userAccountRepo.findByUserId(Id);
         return new ResponseEntity<>(new UserAccountDto(userAccount),HttpStatus.OK);
     }
-
-
-    public void createUserAccount(UserAccountDto userAccountDto, Users user) {
-
-
-    }
 }
+
 
